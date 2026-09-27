@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Harsh Bhavsar | Full Stack Java Developer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#050510;--card:rgba(15,15,35,.6);--border:rgba(255,255,255,.08);
+  --accent:#00d4ff;--accent2:#7c3aed;--green:#00ff88;--pink:#ff006e;
+  --text:#e8e8f0;--muted:#6b7280;--glass:rgba(255,255,255,.03);
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;overflow-x:hidden;cursor:none}
+::selection{background:rgba(0,212,255,.3)}
+a{color:inherit;text-decoration:none}
+
+/* CUSTOM CURSOR */
+.cursor{position:fixed;width:20px;height:20px;border:2px solid var(--accent);border-radius:50%;pointer-events:none;z-index:9999;transition:transform .15s,background .15s;mix-blend-mode:difference}
+.cursor-dot{position:fixed;width:6px;height:6px;background:var(--accent);border-radius:50%;pointer-events:none;z-index:9999}
+.cursor.hover{transform:scale(2.5);background:rgba(0,212,255,.15)}
+
+/* PARTICLES BG */
+#particles{position:fixed;inset:0;z-index:0;pointer-events:none}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:20px 40px;display:flex;align-items:center;justify-content:space-between;transition:all .3s}
+nav.scrolled{background:rgba(5,5,16,.9);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:14px 40px}
+.nav-logo{font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--accent);display:flex;align-items:center;gap:8px}
+.nav-logo span{color:var(--green)}
+.nav-links{display:flex;gap:32px;align-items:center}
+.nav-links a{font-size:13px;font-weight:500;color:var(--muted);transition:color .2s;position:relative}
+.nav-links a:hover{color:var(--text)}
+.nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px;background:var(--accent);transition:width .3s}
+.nav-links a:hover::after{width:100%}
+.nav-terminal-btn{padding:8px 16px;background:var(--glass);border:1px solid var(--border);border-radius:8px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--accent);cursor:pointer;transition:all .2s}
+.nav-terminal-btn:hover{border-color:var(--accent);background:rgba(0,212,255,.1)}
+.burger{display:none;flex-direction:column;gap:5px;background:none;border:0;cursor:pointer;padding:8px}
+.burger span{width:24px;height:2px;background:var(--text);transition:.3s}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;align-items:center;position:relative;padding:120px 0 80px}
+.hero-content{position:relative;z-index:2;max-width:1100px;margin:0 auto;padding:0 40px;width:100%}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;padding:8px 16px;background:var(--glass);border:1px solid var(--border);border-radius:999px;font-size:12px;color:var(--muted);margin-bottom:32px;backdrop-filter:blur(10px)}
+.hero-badge .dot{width:8px;height:8px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(0,255,136,.4)}50%{opacity:.8;box-shadow:0 0 0 8px rgba(0,255,136,0)}}
+.hero h1{font-family:'Space Grotesk',sans-serif;font-size:clamp(48px,8vw,96px);font-weight:700;line-height:1;letter-spacing:-.04em;margin-bottom:16px}
+.hero h1 .gradient{background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero .tagline{font-family:'JetBrains Mono',monospace;font-size:clamp(14px,2vw,18px);color:var(--muted);margin-bottom:24px}
+.hero .tagline .blink{animation:blink 1s step-end infinite}
+@keyframes blink{50%{opacity:0}}
+.hero .desc{font-size:16px;color:var(--muted);max-width:620px;margin-bottom:32px;line-height:1.7}
+.hero-btns{display:flex;flex-wrap:wrap;gap:16px;margin-bottom:48px}
+.btn{padding:14px 28px;border-radius:12px;font-weight:600;font-size:14px;cursor:pointer;transition:all .3s;display:inline-flex;align-items:center;gap:8px}
+.btn-primary{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border:none}
+.btn-primary:hover{transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,212,255,.3)}
+.btn-outline{background:transparent;color:var(--text);border:1px solid var(--border)}
+.btn-outline:hover{border-color:var(--accent);color:var(--accent)}
+.hero-tech{display:flex;flex-wrap:wrap;gap:12px;margin-top:8px}
+.tech-badge{padding:10px 18px;border-radius:10px;background:var(--card);border:1px solid var(--border);backdrop-filter:blur(10px);display:flex;align-items:center;gap:8px;font-size:13px;font-weight:500;transition:all .3s}
+.tech-badge:hover{border-color:var(--accent);transform:translateY(-2px)}
+.tech-badge .dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.tech-badge .dot.java{background:#f89820}
+.tech-badge .dot.spring{background:#6db33f}
+.tech-badge .dot.mongo{background:#00ed64}
+.tech-badge .dot.fx{background:#e44d26}
+
+/* FLOATING SHAPES */
+.floating-shapes{position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none}
+.shape{position:absolute;border-radius:50%;filter:blur(80px);opacity:.15;animation:float 20s infinite ease-in-out}
+.shape-1{width:500px;height:500px;background:var(--accent);top:-100px;right:-100px;animation-delay:0s}
+.shape-2{width:400px;height:400px;background:var(--accent2);bottom:-50px;left:-50px;animation-delay:-7s}
+.shape-3{width:300px;height:300px;background:#f89820;top:50%;left:50%;animation-delay:-14s}
+@keyframes float{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(30px,-30px) scale(1.1)}66%{transform:translate(-20px,20px) scale(.9)}}
+
+/* SECTIONS */
+section{padding:100px 0;position:relative;z-index:1}
+.wrap{max-width:1100px;margin:0 auto;padding:0 40px}
+.section-label{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--accent);letter-spacing:.2em;text-transform:uppercase;margin-bottom:12px;display:flex;align-items:center;gap:10px}
+.section-label::before{content:'';display:block;width:30px;height:1px;background:var(--accent)}
+.section-title{font-family:'Space Grotesk',sans-serif;font-size:clamp(32px,5vw,52px);font-weight:700;letter-spacing:-.03em;margin-bottom:16px}
+.section-desc{color:var(--muted);font-size:16px;max-width:500px;margin-bottom:48px;line-height:1.6}
+
+/* ABOUT - BENTO */
+.bento{display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:auto auto;gap:16px}
+.bento-item{padding:28px;border-radius:16px;background:var(--card);border:1px solid var(--border);backdrop-filter:blur(10px);transition:all .3s}
+.bento-item:hover{border-color:var(--accent);transform:translateY(-4px)}
+.bento-item.large{grid-column:span 2}
+.bento-item .label{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--accent);letter-spacing:.1em;margin-bottom:12px}
+.bento-item h3{font-size:18px;font-weight:600;margin-bottom:8px}
+.bento-item p{font-size:14px;color:var(--muted);line-height:1.6}
+.bento-item .stat-num{font-family:'Space Grotesk',sans-serif;font-size:42px;font-weight:700;color:var(--accent)}
+.bento-item .stat-label{font-size:13px;color:var(--muted);margin-top:4px}
+
+/* SKILLS */
+.skills-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.skill-category{padding:28px;border-radius:16px;background:var(--card);border:1px solid var(--border);backdrop-filter:blur(10px);transition:all .3s}
+.skill-category:hover{border-color:var(--accent);transform:translateY(-4px)}
+.skill-category .cat-header{display:flex;align-items:center;gap:10px;margin-bottom:16px}
+.skill-category .cat-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px}
+.skill-category .cat-icon.java-bg{background:rgba(248,152,32,.15);color:#f89820}
+.skill-category .cat-icon.spring-bg{background:rgba(109,179,63,.15);color:#6db33f}
+.skill-category .cat-icon.mongo-bg{background:rgba(0,237,100,.15);color:#00ed64}
+.skill-category .cat-icon.fx-bg{background:rgba(228,77,38,.15);color:#e44d26}
+.skill-category .cat-icon.tool-bg{background:rgba(0,212,255,.15);color:var(--accent)}
+.skill-category .cat-icon.ai-bg{background:rgba(124,58,237,.15);color:var(--accent2)}
+.skill-category h3{font-size:15px;font-weight:600}
+.skill-category .skill-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+.skill-category .skill-tags span{font-size:12px;padding:6px 12px;border-radius:8px;background:rgba(255,255,255,.05);color:var(--muted);font-family:'JetBrains Mono',monospace}
+.skill-category .skill-tags span.highlight{background:rgba(0,212,255,.1);color:var(--accent)}
+
+/* PROJECTS */
+.projects-stack{display:flex;flex-direction:column;gap:24px}
+.project-card{padding:40px;border-radius:20px;background:var(--card);border:1px solid var(--border);backdrop-filter:blur(10px);transition:all .4s}
+.project-card:hover{border-color:var(--accent);transform:translateY(-8px)}
+.project-top{display:flex;align-items:flex-start;justify-content:space-between;gap:24px;margin-bottom:20px}
+.project-num{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--accent);margin-bottom:8px}
+.project-info h3{font-size:24px;font-weight:700;margin-bottom:8px}
+.project-tech-line{font-family:'JetBrains Mono',monospace;font-size:11px;color:#6db33f;margin-bottom:12px}
+.project-info p{font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:16px}
+.project-features{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+.project-features span{font-size:11px;padding:6px 12px;border-radius:8px;background:rgba(0,212,255,.08);color:var(--accent);font-family:'JetBrains Mono',monospace}
+.project-links{display:flex;gap:20px}
+.project-links a{font-size:13px;font-weight:600;color:var(--accent);display:flex;align-items:center;gap:6px;transition:all .2s}
+.project-links a:hover{color:var(--text)}
+.project-visual{background:linear-gradient(135deg,rgba(0,212,255,.05),rgba(124,58,237,.05));border-radius:12px;padding:24px;border:1px solid var(--border);margin-top:20px}
+.project-visual .code-block{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted);line-height:1.8}
+.project-visual .code-block .keyword{color:var(--accent2)}
+.project-visual .code-block .string{color:var(--green)}
+.project-visual .code-block .comment{color:var(--muted)}
+
+/* EXPERIENCE */
+.timeline{position:relative;padding-left:40px}
+.timeline::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:linear-gradient(180deg,var(--accent),var(--accent2),var(--pink))}
+.timeline-item{position:relative;margin-bottom:48px}
+.timeline-item::before{content:'';position:absolute;left:-45px;top:8px;width:12px;height:12px;border-radius:50%;background:var(--accent);box-shadow:0 0 20px rgba(0,212,255,.5)}
+.timeline-item .when{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--accent);margin-bottom:8px}
+.timeline-item h3{font-size:20px;font-weight:600;margin-bottom:4px}
+.timeline-item .org{font-size:14px;color:var(--muted);margin-bottom:12px}
+.timeline-item p{font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:8px}
+.timeline-item ul{margin-left:20px;margin-bottom:8px}
+.timeline-item li{font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:6px}
+.timeline-item li::marker{color:var(--accent)}
+
+/* AI SECTION */
+.ai-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.ai-card{padding:32px;border-radius:16px;background:var(--card);border:1px solid var(--border);backdrop-filter:blur(10px);transition:all .3s;text-align:center}
+.ai-card:hover{border-color:var(--accent);transform:translateY(-6px);box-shadow:0 20px 60px rgba(0,212,255,.1)}
+.ai-card .icon{font-size:40px;margin-bottom:16px}
+.ai-card h3{font-size:18px;font-weight:600;margin-bottom:8px}
+.ai-card p{font-size:13px;color:var(--muted);line-height:1.6}
+
+/* EDUCATION */
+.edu-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.edu-card{padding:32px;border-radius:16px;background:var(--card);border:1px solid var(--border);backdrop-filter:blur(10px);transition:all .3s}
+.edu-card:hover{border-color:var(--accent);transform:translateY(-4px)}
+.edu-card .edu-degree{font-size:18px;font-weight:600;margin-bottom:4px}
+.edu-card .edu-school{font-size:14px;color:var(--accent);margin-bottom:4px}
+.edu-card .edu-year{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted);margin-bottom:12px}
+.edu-card .edu-grade{font-family:'Space Grotesk',sans-serif;font-size:36px;font-weight:700;color:var(--green)}
+.edu-card .edu-grade-label{font-size:13px;color:var(--muted);margin-top:4px}
+.edu-card .edu-langs{margin-top:16px;display:flex;flex-wrap:wrap;gap:8px}
+.edu-card .edu-langs span{font-size:12px;padding:6px 12px;border-radius:8px;background:rgba(255,255,255,.05);color:var(--muted);font-family:'JetBrains Mono',monospace}
+
+/* TERMINAL OVERLAY */
+.terminal-overlay{position:fixed;inset:0;z-index:1000;background:rgba(5,5,16,.95);backdrop-filter:blur(20px);display:none;align-items:center;justify-content:center;opacity:0;transition:opacity .3s}
+.terminal-overlay.active{display:flex;opacity:1}
+.terminal-window{width:90%;max-width:700px;background:#0a0a1a;border:1px solid var(--border);border-radius:16px;overflow:hidden;box-shadow:0 40px 100px rgba(0,0,0,.5)}
+.terminal-header{display:flex;align-items:center;gap:8px;padding:16px 20px;background:#0f0f25;border-bottom:1px solid var(--border)}
+.terminal-header .dot{width:12px;height:12px;border-radius:50%}
+.terminal-header .dot.r{background:#ff5f57}
+.terminal-header .dot.y{background:#febc2e}
+.terminal-header .dot.g{background:#28c840}
+.terminal-header .title{margin-left:12px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted)}
+.terminal-body{padding:24px;font-family:'JetBrains Mono',monospace;font-size:13px;min-height:300px;max-height:400px;overflow-y:auto}
+.terminal-body .line{margin-bottom:6px;display:flex;gap:8px}
+.terminal-body .prompt{color:var(--green)}
+.terminal-body .cmd{color:var(--accent)}
+.terminal-body .output{color:var(--muted)}
+.terminal-body .success{color:var(--green)}
+.terminal-body .error{color:var(--pink)}
+.terminal-close{position:absolute;top:20px;right:20px;background:none;border:none;color:var(--muted);font-size:24px;cursor:pointer}
+
+/* CONTACT */
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px}
+.contact-form{display:flex;flex-direction:column;gap:16px}
+.contact-form input,.contact-form textarea{padding:16px 20px;border-radius:12px;border:1px solid var(--border);background:var(--glass);color:var(--text);font-family:inherit;font-size:14px;backdrop-filter:blur(10px);transition:border-color .3s}
+.contact-form input:focus,.contact-form textarea:focus{outline:none;border-color:var(--accent)}
+.contact-form textarea{resize:vertical;min-height:120px}
+.contact-form button{padding:16px 32px;border-radius:12px;border:none;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-weight:700;font-size:15px;cursor:pointer;transition:all .3s}
+.contact-form button:hover{transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,212,255,.3)}
+.contact-info{display:flex;flex-direction:column;gap:16px}
+.contact-item{display:flex;align-items:center;gap:16px;padding:20px;background:var(--glass);border:1px solid var(--border);border-radius:12px;backdrop-filter:blur(10px)}
+.contact-item .icon{width:48px;height:48px;border-radius:12px;background:rgba(0,212,255,.1);display:flex;align-items:center;justify-content:center;font-size:20px}
+.contact-item h4{font-size:14px;font-weight:600;margin-bottom:4px}
+.contact-item p{font-size:13px;color:var(--muted)}
+.contact-item a{color:var(--accent)}
+
+/* FOOTER */
+footer{border-top:1px solid var(--border);padding:40px 0;text-align:center;position:relative;z-index:1}
+.footer-name{font-family:'Space Grotesk',sans-serif;font-size:clamp(40px,10vw,100px);font-weight:700;background:linear-gradient(135deg,rgba(0,212,255,.1),rgba(124,58,237,.1));-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:-.04em}
+.footer-links{display:flex;justify-content:center;gap:32px;margin:24px 0}
+.footer-links a{font-size:13px;color:var(--muted);transition:color .2s}
+.footer-links a:hover{color:var(--accent)}
+.footer-copy{font-size:12px;color:var(--muted)}
+
+/* SCROLL REVEAL */
+.reveal{opacity:0;transform:translateY(30px);transition:all .8s cubic-bezier(.16,1,.3,1)}
+.reveal.visible{opacity:1;transform:none}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  .nav-links{display:none}
+  .burger{display:flex}
+  .bento{grid-template-columns:1fr}
+  .bento-item.large{grid-column:span 1}
+  .skills-grid{grid-template-columns:1fr}
+  .edu-grid{grid-template-columns:1fr}
+  .ai-grid{grid-template-columns:1fr}
+  .contact-grid{grid-template-columns:1fr}
+  .project-top{flex-direction:column}
+  .hero h1{font-size:clamp(36px,10vw,60px)}
+}
+</style>
+</head>
+<body>
+
+<!-- CUSTOM CURSOR -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-dot" id="cursorDot"></div>
+
+<!-- PARTICLES -->
+<canvas id="particles"></canvas>
+
+<!-- TERMINAL OVERLAY -->
+<div class="terminal-overlay" id="terminalOverlay">
+  <button class="terminal-close" onclick="closeTerminal()">&times;</button>
+  <div class="terminal-window">
+    <div class="terminal-header">
+      <div class="dot r"></div>
+      <div class="dot y"></div>
+      <div class="dot g"></div>
+      <span class="title">harsh@portfolio ~ terminal</span>
+    </div>
+    <div class="terminal-body" id="terminalBody">
+      <div class="line"><span class="prompt">$</span> <span class="cmd">Welcome to Harsh's Portfolio Terminal</span></div>
+      <div class="line output">Type 'help' to see available commands</div>
+      <div class="line">&nbsp;</div>
+    </div>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#home" class="nav-logo"><span>$</span> harsh.dev</a>
+  <div class="nav-links">
+    <a href="#about">About</a>
+    <a href="#skills">Skills</a>
+    <a href="#projects">Projects</a>
+    <a href="#experience">Experience</a>
+    <a href="#ai">AI</a>
+    <a href="#contact">Contact</a>
+    <button class="nav-terminal-btn" onclick="openTerminal()">{'>_'} Terminal</button>
+  </div>
+  <button class="burger" onclick="toggleMenu()"><span></span><span></span><span></span></button>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="floating-shapes">
+    <div class="shape shape-1"></div>
+    <div class="shape shape-2"></div>
+    <div class="shape shape-3"></div>
+  </div>
+  <div class="hero-content">
+    <div class="hero-badge"><span class="dot"></span> Open to Remote Opportunities</div>
+    <h1>Building <span class="gradient">scalable</span><br>backends.</h1>
+    <div class="tagline">// Full Stack Java Developer · Spring Boot · REST APIs · MongoDB<span class="blink">|</span></div>
+    <p class="desc">2 years building enterprise-grade REST APIs and backend services with Spring Boot and MongoDB, alongside JavaFX desktop clients, for high-transaction POS systems. Shipped 3 production platforms handling 1000+ transactions/day.</p>
+    <div class="hero-btns">
+      <a href="#projects" class="btn btn-primary">View Projects</a>
+      <a href="#contact" class="btn btn-outline">Get In Touch</a>
+      <a href="/resume.pdf" target="_blank" class="btn btn-outline">Download Resume</a>
+    </div>
+    <div class="hero-tech">
+      <div class="tech-badge"><span class="dot java"></span> Java 21</div>
+      <div class="tech-badge"><span class="dot spring"></span> Spring Boot</div>
+      <div class="tech-badge"><span class="dot mongo"></span> MongoDB</div>
+      <div class="tech-badge"><span class="dot fx"></span> JavaFX</div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="wrap">
+    <div class="reveal">
+      <div class="section-label">About</div>
+      <div class="section-title">Who I Am</div>
+      <div class="section-desc">A backend-focused developer who ships production systems end-to-end.</div>
+    </div>
+    <div class="bento">
+      <div class="bento-item large reveal">
+        <div class="label">PROFILE</div>
+        <h3>Harsh Bhavsar</h3>
+        <p>Full Stack Java Developer with 2 years of experience building enterprise-grade REST APIs and backend services with Spring Boot and MongoDB, alongside JavaFX desktop clients, for high-transaction POS systems in retail, restaurants, and salons. Owns end-to-end feature development from concept to deployment. Values data-driven decision-making to reduce latency and improve code quality, and regularly mentors junior developers on best practices.</p>
+      </div>
+      <div class="bento-item reveal">
+        <div class="label">EXPERIENCE</div>
+        <div class="stat-num">2+</div>
+        <div class="stat-label">Years Building</div>
+      </div>
+      <div class="bento-item reveal">
+        <div class="label">SHIPPED</div>
+        <div class="stat-num">3</div>
+        <div class="stat-label">POS Systems</div>
+      </div>
+      <div class="bento-item reveal">
+        <div class="label">CLIENT LOCATIONS</div>
+        <div class="stat-num">5+</div>
+        <div class="stat-label">Deployed Across</div>
+      </div>
+      <div class="bento-item reveal">
+        <div class="label">DAILY TXNS</div>
+        <div class="stat-num">1K+</div>
+        <div class="stat-label">Transactions/Day</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="wrap">
+    <div class="reveal">
+      <div class="section-label">Skills</div>
+      <div class="section-title">Tech Stack</div>
+      <div class="section-desc">Backend-first. Production-proven. Enterprise-ready.</div>
+    </div>
+    <div class="skills-grid reveal">
+      <div class="skill-category">
+        <div class="cat-header">
+          <div class="cat-icon java-bg">☕</div>
+          <h3>Backend</h3>
+        </div>
+        <div class="skill-tags">
+          <span class="highlight">Java 21</span>
+          <span class="highlight">Spring Boot</span>
+          <span>Spring MVC</span>
+          <span>Spring Data</span>
+          <span>RESTful APIs</span>
+        </div>
+      </div>
+      <div class="skill-category">
+        <div class="cat-header">
+          <div class="cat-icon mongo-bg">🍃</div>
+          <h3>Database</h3>
+        </div>
+        <div class="skill-tags">
+          <span class="highlight">MongoDB</span>
+          <span>Schema Design</span>
+          <span>Aggregation</span>
+          <span>Indexing</span>
+          <span>Query Optimization</span>
+        </div>
+      </div>
+      <div class="skill-category">
+        <div class="cat-header">
+          <div class="cat-icon fx-bg">🖥️</div>
+          <h3>Frontend</h3>
+        </div>
+        <div class="skill-tags">
+          <span class="highlight">JavaFX</span>
+          <span>FXML</span>
+          <span>Scene Builder</span>
+          <span>Custom Components</span>
+          <span>Data Binding</span>
+        </div>
+      </div>
+      <div class="skill-category">
+        <div class="cat-header">
+          <div class="cat-icon tool-bg">🛠️</div>
+          <h3>Tools & DevOps</h3>
+        </div>
+        <div class="skill-tags">
+          <span>Maven</span>
+          <span>Git</span>
+          <span>IntelliJ IDEA</span>
+          <span>MongoDB Compass</span>
+          <span>Postman</span>
+        </div>
+      </div>
+      <div class="skill-category">
+        <div class="cat-header">
+          <div class="cat-icon ai-bg">🤖</div>
+          <h3>AI Tools</h3>
+        </div>
+        <div class="skill-tags">
+          <span class="highlight">Claude CLI</span>
+          <span class="highlight">Cursor AI</span>
+          <span>Code Review</span>
+          <span>Debugging</span>
+          <span>Rapid Prototyping</span>
+        </div>
+      </div>
+      <div class="skill-category">
+        <div class="cat-header">
+          <div class="cat-icon" style="background:rgba(255,0,110,.15);color:var(--pink)">🌐</div>
+          <h3>Languages</h3>
+        </div>
+        <div class="skill-tags">
+          <span class="highlight">Java</span>
+          <span>Dart</span>
+          <span>HTML/CSS</span>
+          <span>Flutter</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="wrap">
+    <div class="reveal">
+      <div class="section-label">Projects</div>
+      <div class="section-title">Production Systems Shipped</div>
+      <div class="section-desc">End-to-end POS platforms — backend APIs, desktop UIs, payment integrations.</div>
+    </div>
+    <div class="projects-stack">
+      <div class="project-card reveal">
+        <div class="project-top">
+          <div class="project-info">
+            <div class="project-num">01</div>
+            <h3>Retail POS System</h3>
+            <div class="project-tech-line">JavaFX + Spring Boot + MongoDB</div>
+            <p>Complete point-of-sale platform for retail stores with inventory management, sales tracking, loyalty programs, and multi-outlet support. Integrated PAX/Valor/CodePay payment gateways.</p>
+            <div class="project-features">
+              <span>Barcode Scanning</span>
+              <span>Inventory Tracking</span>
+              <span>Loyalty Programs</span>
+              <span>Real-Time Dashboard</span>
+              <span>Multi-Payment</span>
+              <span>Receipt Printing</span>
+            </div>
+          </div>
+          <div class="project-links">
+            <a href="#">Live Demo →</a>
+            <a href="#">Source →</a>
+          </div>
+        </div>
+        <div class="project-visual">
+          <div class="code-block">
+            <div><span class="comment">// Retail POS - Payment Gateway Integration</span></div>
+            <div><span class="keyword">@Service</span></div>
+            <div><span class="keyword">public class</span> PaymentService {</div>
+            <div>&nbsp;&nbsp;<span class="keyword">@Autowired</span> PAXLinkClient paxClient;</div>
+            <div>&nbsp;&nbsp;<span class="keyword">@Autowired</span> ValorClient valorClient;</div>
+            <div>&nbsp;&nbsp;<span class="keyword">@Autowired</span> CodePayClient codePayClient;</div>
+            <div>&nbsp;&nbsp;<span class="keyword">public</span> TransactionResult process(PaymentDTO dto) {</div>
+            <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> switch(dto.getMethod()) {</div>
+            <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">case</span> <span class="string">"PAX"</span> -> paxClient.charge(dto);</div>
+            <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">case</span> <span class="string">"VALOR"</span> -> valorClient.charge(dto);</div>
+            <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">case</span> <span class="string">"CODEPAY"</span> -> codePayClient.charge(dto);</div>
+            <div>&nbsp;&nbsp;&nbsp;&nbsp;};</div>
+            <div>&nbsp;&nbsp;}</div>
+            <div>}</div>
+          </div>
+        </div>
+      </div>
+      <div class="project-card reveal">
+        <div class="project-top">
+          <div class="project-info">
+            <div class="project-num">02</div>
+            <h3>Restaurant POS System</h3>
+            <div class="project-tech-line">JavaFX + Spring Boot + MongoDB</div>
+            <p>Full restaurant management with visual floor plan, live order tracking, Kitchen Display System integration, and split-payment billing with tip/tax support.</p>
+            <div class="project-features">
+              <span>Visual Floor Plan</span>
+              <span>Kitchen Display</span>
+              <span>Menu Modifiers</span>
+              <span>Split Payment</span>
+              <span>Tip/Tax</span>
+              <span>Ingredient Inventory</span>
+            </div>
+          </div>
+          <div class="project-links">
+            <a href="#">Live Demo →</a>
+            <a href="#">Source →</a>
+          </div>
+        </div>
+        <div class="project-visual">
+          <div class="code-block">
+            <div><span class="comment">// Restaurant POS - Order Service</span></div>
+            <div><span class="keyword">@Service</span></div>
+            <div><span class="keyword">public class</span> OrderService {</div>
+            <div>&nbsp;&nbsp;<span class="keyword">public</span> Order placeOrder(OrderDTO dto) {</div>
+            <div>&nbsp;&nbsp;&nbsp;&nbsp;validate(dto);</div>
+            <div>&nbsp;&nbsp;&nbsp;&nbsp;notifyKitchen(dto);</div>
+            <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> repository.save(dto.toOrder());</div>
+            <div>&nbsp;&nbsp;}</div>
+            <div>}</div>
+          </div>
+        </div>
+      </div>
+      <div class="project-card reveal">
+        <div class="project-top">
+          <div class="project-info">
+            <div class="project-num">03</div>
+            <h3>Salon POS System</h3>
+            <div class="project-tech-line">JavaFX + Spring Boot + MongoDB</div>
+            <p>Appointment scheduling with calendar view, automated SMS/email reminders, staff scheduling with commissions, and automated inventory reorder.</p>
+            <div class="project-features">
+              <span>Appointment Calendar</span>
+              <span>SMS/Email Reminders</span>
+              <span>Staff Scheduling</span>
+              <span>Commissions</span>
+              <span>Customer History</span>
+              <span>Auto Reorder</span>
+            </div>
+          </div>
+          <div class="project-links">
+            <a href="#">Live Demo →</a>
+            <a href="#">Source →</a>
+          </div>
+        </div>
+        <div class="project-visual">
+          <div class="code-block">
+            <div><span class="comment">// Salon POS - Appointment Booking</span></div>
+            <div><span class="keyword">@PostMapping</span>(<span class="string">"/book"</span>)</div>
+            <div><span class="keyword">public</span> ResponseEntity&lt;Booking&gt; book(</div>
+            <div>&nbsp;&nbsp;<span class="keyword">@RequestBody</span> BookingRequest req) {</div>
+            <div>&nbsp;&nbsp;Booking b = service.book(req);</div>
+            <div>&nbsp;&nbsp;notifyService.sendReminder(b);</div>
+            <div>&nbsp;&nbsp;<span class="keyword">return</span> ResponseEntity.ok(b);</div>
+            <div>}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="wrap">
+    <div class="reveal">
+      <div class="section-label">Experience</div>
+      <div class="section-title">Where I've Worked</div>
+    </div>
+    <div class="timeline">
+      <div class="timeline-item reveal">
+        <div class="when">Sept 2025 — Present</div>
+        <h3>Software Development Engineer</h3>
+        <div class="org">Microtech Outsourcing Services LLP</div>
+        <ul>
+          <li>Lead backend development of 3 production POS platforms (retail, restaurant, salon) using JavaFX, Spring Boot, and MongoDB; deployed across 5+ client locations</li>
+          <li>Built REST APIs handling 1000+ transactions/day; optimized MongoDB schema, queries, and compound indexes, reducing average latency by 35%</li>
+          <li>Built custom JavaFX UI components and FXML layouts used across all three retail POS product lines</li>
+          <li>Integrated 3rd-party payment gateways (PAX/Valor/CodePay), reducing feature turnaround time by 30%</li>
+          <li>Mentored 2 junior developers in Spring Boot and MongoDB best practices</li>
+        </ul>
+      </div>
+      <div class="timeline-item reveal">
+        <div class="when">Sept 2023 — Sept 2025</div>
+        <h3>Software Developer Intern → Full-Time</h3>
+        <div class="org">Microtech Outsourcing Services LLP</div>
+        <ul>
+          <li>Shipped 2 client-facing POS systems as sole developer; contributed to 5 production POS projects from day one</li>
+          <li>Developed reliable JavaFX/FXML UI screens and Spring Boot backend endpoints shipped to actual clients</li>
+          <li>Maintained MongoDB schemas and REST API integration in a live production environment with real business impact</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AI SECTION -->
+<section id="ai">
+  <div class="wrap">
+    <div class="reveal">
+      <div class="section-label">AI & Tools</div>
+      <div class="section-title">AI-Augmented Development</div>
+      <div class="section-desc">Actively building hands-on experience with AI-assisted development tools for code review, debugging, and rapid prototyping.</div>
+    </div>
+    <div class="ai-grid reveal">
+      <div class="ai-card">
+        <div class="icon">🤖</div>
+        <h3>Claude CLI</h3>
+        <p>AI-assisted coding, debugging, and code generation. Used for rapid prototyping and code review.</p>
+      </div>
+      <div class="ai-card">
+        <div class="icon">⚡</div>
+        <h3>Cursor AI</h3>
+        <p>Intelligent code completion and refactoring. AI-powered debugging and optimization.</p>
+      </div>
+      <div class="ai-card">
+        <div class="icon">🧠</div>
+        <h3>Prompt Engineering</h3>
+        <p>Crafting effective prompts for code generation, review, and rapid prototyping.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section id="education">
+  <div class="wrap">
+    <div class="reveal">
+      <div class="section-label">Education</div>
+      <div class="section-title">Academic Background</div>
+    </div>
+    <div class="edu-grid reveal">
+      <div class="edu-card">
+        <div class="edu-degree">Bachelor of Engineering</div>
+        <div class="edu-school">Information Technology</div>
+        <div class="edu-year">GTU · 2019 — 2023</div>
+        <div class="edu-grade">9.22</div>
+        <div class="edu-grade-label">CGPA</div>
+      </div>
+      <div class="edu-card">
+        <div class="edu-degree">Diploma Engineering</div>
+        <div class="edu-school">Computer Engineering</div>
+        <div class="edu-year">GTU · 2017 — 2019</div>
+        <div class="edu-grade">9.10</div>
+        <div class="edu-grade-label">CGPA</div>
+        <div class="edu-langs">
+          <span>Gujarati</span>
+          <span>English</span>
+          <span>Hindi</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="wrap">
+    <div class="reveal">
+      <div class="section-label">Contact</div>
+      <div class="section-title">Let's Build Together</div>
+    </div>
+    <div class="contact-grid reveal">
+      <form class="contact-form" onsubmit="handleSubmit(event)">
+        <input type="text" placeholder="Name" required>
+        <input type="email" placeholder="Email" required>
+        <textarea placeholder="Message" required></textarea>
+        <button type="submit">Send Message</button>
+      </form>
+      <div class="contact-info">
+        <div class="contact-item">
+          <div class="icon">📧</div>
+          <div><h4>Email</h4><p><a href="mailto:dev.harsh.bhavsar@gmail.com">dev.harsh.bhavsar@gmail.com</a></p></div>
+        </div>
+        <div class="contact-item">
+          <div class="icon">📱</div>
+          <div><h4>Phone</h4><p><a href="tel:+918530108748">+91 8530108748</a></p></div>
+        </div>
+        <div class="contact-item">
+          <div class="icon">📍</div>
+          <div><h4>Location</h4><p>Ahmedabad, Gujarat — Open to Remote</p></div>
+        </div>
+        <div class="contact-item">
+          <div class="icon">💼</div>
+          <div><h4>LinkedIn</h4><p><a href="https://linkedin.com/in/harshbhavsar" target="_blank">linkedin.com/in/harshbhavsar</a></p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="footer-name">HARSH</div>
+    <div class="footer-links">
+      <a href="https://github.com/harshbhavsar" target="_blank">GitHub</a>
+      <a href="https://linkedin.com/in/harshbhavsar" target="_blank">LinkedIn</a>
+      <a href="mailto:dev.harsh.bhavsar@gmail.com">Email</a>
+    </div>
+    <div class="footer-copy">&copy; 2026 Harsh Bhavsar. Built with Java & Spring Boot mindset.</div>
+  </div>
+</footer>
+
+<script>
+// CUSTOM CURSOR
+const cursor=document.getElementById('cursor'),cursorDot=document.getElementById('cursorDot');
+let mouseX=0,mouseY=0;
+document.addEventListener('mousemove',e=>{mouseX=e.clientX;mouseY=e.clientY;cursorDot.style.left=mouseX-3+'px';cursorDot.style.top=mouseY-3+'px';cursor.style.left=mouseX-10+'px';cursor.style.top=mouseY-10+'px'});
+document.querySelectorAll('a,button,.tech-badge,.project-card,.ai-card,.skill-category,.edu-card,.bento-item,.contact-item').forEach(el=>{el.addEventListener('mouseenter',()=>cursor.classList.add('hover'));el.addEventListener('mouseleave',()=>cursor.classList.remove('hover'))});
+
+// PARTICLES
+const canvas=document.getElementById('particles'),ctx=canvas.getContext('2d');let particles=[];
+function resizeCanvas(){canvas.width=window.innerWidth;canvas.height=window.innerHeight}
+resizeCanvas();window.addEventListener('resize',resizeCanvas);
+class Particle{constructor(){this.x=Math.random()*canvas.width;this.y=Math.random()*canvas.height;this.vx=(Math.random()-.5)*.3;this.vy=(Math.random()-.5)*.3;this.size=Math.random()*1.5+.5;this.alpha=Math.random()*.5+.1}update(){this.x+=this.vx;this.y+=this.vy;if(this.x<0||this.x>canvas.width)this.vx*=-1;if(this.y<0||this.y>canvas.height)this.vy*=-1}draw(){ctx.beginPath();ctx.arc(this.x,this.y,this.size,0,Math.PI*2);ctx.fillStyle=`rgba(0,212,255,${this.alpha})`;ctx.fill()}}
+for(let i=0;i<80;i++)particles.push(new Particle);
+function animateParticles(){ctx.clearRect(0,0,canvas.width,canvas.height);particles.forEach(p=>{p.update();p.draw()});for(let i=0;i<particles.length;i++){for(let j=i+1;j<particles.length;j++){const dx=particles[i].x-particles[j].x,dy=particles[i].y-particles[j].y,dist=Math.sqrt(dx*dx+dy*dy);if(dist<150){ctx.beginPath();ctx.moveTo(particles[i].x,particles[i].y);ctx.lineTo(particles[j].x,particles[j].y);ctx.strokeStyle=`rgba(0,212,255,${.08*(1-dist/150)})`;ctx.stroke()}}}requestAnimationFrame(animateParticles)}
+animateParticles();
+
+// NAV SCROLL
+window.addEventListener('scroll',()=>{document.getElementById('nav').classList.toggle('scrolled',window.scrollY>50)});
+
+// SCROLL REVEAL
+const observer=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')})},{threshold:.1});
+document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+
+// TERMINAL
+const terminalBody=document.getElementById('terminalBody'),terminalOverlay=document.getElementById('terminalOverlay');
+let currentInput='';
+const commands={
+  help:'Commands: help, about, skills, projects, experience, education, contact, clear, close',
+  about:'Harsh Bhavsar — Full Stack Java Developer. 2 years building enterprise REST APIs with Spring Boot & MongoDB. Shipped 3 production POS systems. Mentors junior devs.',
+  skills:'Java 21, Spring Boot, Spring MVC, Spring Data MongoDB, RESTful APIs, JavaFX, FXML, Scene Builder, Maven, Git, IntelliJ IDEA, MongoDB Compass, Postman, Claude CLI, Cursor AI, Dart, Flutter',
+  projects:'1. Retail POS — Barcode, inventory, loyalty, PAX/Valor/CodePay\n2. Restaurant POS — Floor plan, kitchen display, split billing\n3. Salon POS — Appointments, reminders, staff scheduling',
+  experience:'SDE @ Microtech (Sept 2025 - Present) — Lead dev, 1000+ txns/day, 35% latency reduced\nSDE Intern → Full-Time @ Microtech (Sept 2023 - Sept 2025) — Shipped 2 POS systems',
+  education:'B.E. IT — GTU (9.22 CGPA, 2019-2023)\nDiploma CE — GTU (9.10 CGPA, 2017-2019)',
+  contact:'Email: dev.harsh.bhavsar@gmail.com\nPhone: +91 8530108748\nLinkedIn: linkedin.com/in/harshbhavsar\nLocation: Ahmedabad, Gujarat (Open to Remote)',
+  clear:'__CLEAR__',
+  close:'__CLOSE__'
+};
+function openTerminal(){terminalOverlay.classList.add('active');terminalBody.innerHTML='<div class="line"><span class="prompt">$</span> <span class="cmd">Welcome to Harsh\'s Portfolio Terminal</span></div><div class="line output">Type \'help\' for available commands</div><div class="line">&nbsp;</div>';currentInput=''}
+function closeTerminal(){terminalOverlay.classList.remove('active')}
+function toggleMenu(){document.querySelector('.nav-links').classList.toggle('open')}
+terminalOverlay.addEventListener('click',e=>{if(e.target===terminalOverlay)closeTerminal()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeTerminal();if(e.key==='`'&&!terminalOverlay.classList.contains('active')){e.preventDefault();openTerminal()}});
+document.addEventListener('keydown',e=>{if(!terminalOverlay.classList.contains('active'))return;if(e.key==='Enter'&&currentInput.trim()){const cmd=currentInput.trim().toLowerCase();currentInput='';const output=commands[cmd];if(cmd==='clear'){terminalBody.innerHTML=''}else if(cmd==='close'){closeTerminal()}else if(output){terminalBody.innerHTML+=`<div class="line"><span class="prompt">$</span> <span class="cmd">${cmd}</span></div>`;output.split('\n').forEach(line=>{terminalBody.innerHTML+=`<div class="line success">${line}</div>`});terminalBody.innerHTML+='<div class="line">&nbsp;</div>'}else{terminalBody.innerHTML+=`<div class="line"><span class="prompt">$</span> <span class="cmd">${cmd}</span></div>`;terminalBody.innerHTML+=`<div class="line error">Command not found: ${cmd}. Type \'help\'.</div>`;terminalBody.innerHTML+='<div class="line">&nbsp;</div>'}terminalBody.scrollTop=terminalBody.scrollHeight}else if(e.key==='Backspace'){currentInput=currentInput.slice(0,-1)}else if(e.key.length===1){currentInput+=e.key}});
+
+// CONTACT FORM
+function handleSubmit(e){e.preventDefault();alert('Message sent! I\'ll get back to you soon.');e.target.reset()}
+
+// SMOOTH SCROLL
+document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click',e=>{e.preventDefault();const t=document.querySelector(a.getAttribute('href'));if(t)t.scrollIntoView({behavior:'smooth',block:'start'})})});
+</script>
+</body>
+</html>
