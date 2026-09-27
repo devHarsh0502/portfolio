@@ -657,10 +657,10 @@ body.menu-open .mobile-close{display:flex;align-items:center;justify-content:cen
       <div class="section-title">Let's Build Together</div>
     </div>
     <div class="contact-grid reveal">
-      <form class="contact-form" onsubmit="handleSubmit(event)">
-        <input type="text" placeholder="Name" required>
-        <input type="email" placeholder="Email" required>
-        <textarea placeholder="Message" required></textarea>
+      <form class="contact-form" action="https://formspree.io/f/mbglpzzr" method="POST">
+        <input type="text" name="name" placeholder="Name" required>
+        <input type="email" name="email" placeholder="Email" required>
+        <textarea name="message" placeholder="Message" required></textarea>
         <button type="submit">Send Message</button>
       </form>
       <div class="contact-info">
