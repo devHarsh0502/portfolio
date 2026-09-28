@@ -1,8 +1,7 @@
 {
-  "buildCommand": null,
-  "outputDirectory": ".",
-  "framework": null,
-  "rewrites": [
-    { "source": "/((?!.*\\.\\w+$).*)", "destination": "/index.html" }
+  "rewrites": [],
+  "routes": [
+    { "src": "/resume.pdf", "dest": "/resume.pdf" },
+    { "src": "/(.*)", "dest": "/index.html" }
   ]
 }
