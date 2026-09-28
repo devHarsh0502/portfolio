@@ -1,13 +1,5 @@
 {
-  "rewrites": [],
   "routes": [
-    {
-      "src": "^/(resume\\.pdf)$",
-      "headers": [
-        { "key": "Content-Type", "value": "application/pdf" },
-        { "key": "Content-Disposition", "value": "inline" }
-      ]
-    },
     {
       "handle": "filesystem"
     },
