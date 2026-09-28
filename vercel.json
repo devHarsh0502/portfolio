@@ -1,7 +1,5 @@
 {
-  "rewrites": [],
-  "routes": [
-    { "src": "/resume.pdf", "dest": "/resume.pdf" },
-    { "src": "/(.*)", "dest": "/index.html" }
+  "rewrites": [
+    { "source": "/((?!resume\\.pdf$).*)", "destination": "/index.html" }
   ]
 }
