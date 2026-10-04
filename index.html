@@ -264,8 +264,9 @@ body.menu-open .mobile-close{display:flex;align-items:center;justify-content:cen
       <div class="line"><span class="prompt">$</span> <span class="cmd">Welcome to Harsh's Portfolio Terminal</span></div>
       <div class="line output">Type 'help' to see available commands</div>
       <div class="line">&nbsp;</div>
-      <div class="line input-line"><span class="prompt">$</span> <span class="cursor-blink">_</span></div>
+      <div class="line input-line"><span class="prompt">$</span> <span id="terminalDisplay" class="cmd"></span><span class="cursor-blink">_</span></div>
     </div>
+    <input type="text" id="terminalInput" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" style="position:absolute;left:-9999px;opacity:0;width:1px;height:1px;border:none;outline:none">
   </div>
 </div>
 
@@ -739,15 +740,17 @@ const commands={
   clear:'__CLEAR__',
   close:'__CLOSE__'
 };
-function openTerminal(){terminalOverlay.classList.add('active');terminalBody.innerHTML='<div class="line"><span class="prompt">$</span> <span class="cmd">Welcome to Harsh\'s Portfolio Terminal</span></div><div class="line output">Type \'help\' for available commands</div><div class="line">&nbsp;</div><div class="line input-line"><span class="prompt">$</span> <span class="cursor-blink">_</span></div>';currentInput='';terminalBody.scrollTop=terminalBody.scrollHeight}
-function closeTerminal(){terminalOverlay.classList.remove('active')}
+function openTerminal(){terminalOverlay.classList.add('active');terminalBody.innerHTML='<div class="line"><span class="prompt">$</span> <span class="cmd">Welcome to Harsh\'s Portfolio Terminal</span></div><div class="line output">Type \'help\' for available commands</div><div class="line">&nbsp;</div><div class="line input-line"><span class="prompt">$</span> <span id="terminalDisplay" class="cmd"></span><span class="cursor-blink">_</span></div>';const ti=document.getElementById('terminalInput');ti.value='';setTimeout(()=>{ti.focus()},100);terminalBody.scrollTop=terminalBody.scrollHeight}
+function closeTerminal(){terminalOverlay.classList.remove('active');document.getElementById('terminalInput').blur()}
 function toggleMenu(){const nl=document.querySelector('.nav-links');const isOpen=nl.classList.toggle('open');document.body.classList.toggle('menu-open',isOpen)}
 function closeMenu(){document.querySelector('.nav-links').classList.remove('open');document.body.classList.remove('menu-open')}
 document.querySelectorAll('.nav-links a').forEach(a=>{a.addEventListener('click',()=>{closeMenu()})});
-terminalOverlay.addEventListener('click',e=>{if(e.target===terminalOverlay)closeTerminal()});
+terminalOverlay.addEventListener('click',e=>{if(e.target===terminalOverlay)closeTerminal();else if(terminalOverlay.contains(e.target)&&e.target.closest('.terminal-window')){const ti=document.getElementById('terminalInput');ti.focus()}});
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeTerminal();if(e.key==='`'&&!terminalOverlay.classList.contains('active')){e.preventDefault();openTerminal()}});
-function updateInputLine(){const inputLine=terminalBody.querySelector('.input-line');if(inputLine)inputLine.innerHTML=`<span class="prompt">$</span> <span class="cmd">${currentInput}</span><span class="cursor-blink">_</span>`}
-document.addEventListener('keydown',e=>{if(!terminalOverlay.classList.contains('active'))return;if(e.key==='Enter'&&currentInput.trim()){const cmd=currentInput.trim().toLowerCase();currentInput='';const inputLine=terminalBody.querySelector('.input-line');if(inputLine)inputLine.remove();const output=commands[cmd];if(cmd==='clear'){terminalBody.innerHTML=''}else if(cmd==='close'){closeTerminal()}else if(output){terminalBody.innerHTML+=`<div class="line"><span class="prompt">$</span> <span class="cmd">${cmd}</span></div>`;output.split('\n').forEach(line=>{terminalBody.innerHTML+=`<div class="line success">${line}</div>`});terminalBody.innerHTML+='<div class="line">&nbsp;</div>'}else{terminalBody.innerHTML+=`<div class="line"><span class="prompt">$</span> <span class="cmd">${cmd}</span></div>`;terminalBody.innerHTML+=`<div class="line error">Command not found: ${cmd}. Type 'help'.</div>`;terminalBody.innerHTML+='<div class="line">&nbsp;</div>'}terminalBody.innerHTML+='<div class="line input-line"><span class="prompt">$</span> <span class="cursor-blink">_</span></div>';terminalBody.scrollTop=terminalBody.scrollHeight}else if(e.key==='Backspace'){currentInput=currentInput.slice(0,-1);updateInputLine()}else if(e.key.length===1&&!e.ctrlKey&&!e.metaKey){currentInput+=e.key;updateInputLine()}});
+function processCommand(cmd){cmd=cmd.trim().toLowerCase();if(!cmd)return;const inputLine=terminalBody.querySelector('.input-line');if(inputLine)inputLine.remove();const output=commands[cmd];if(cmd==='clear'){terminalBody.innerHTML=''}else if(cmd==='close'){closeTerminal();return}if(cmd==='clear'){terminalBody.innerHTML='<div class="line input-line"><span class="prompt">$</span> <span id="terminalDisplay" class="cmd"></span><span class="cursor-blink">_</span></div>'}else if(output){terminalBody.innerHTML+=`<div class="line"><span class="prompt">$</span> <span class="cmd">${cmd}</span></div>`;output.split('\n').forEach(line=>{terminalBody.innerHTML+=`<div class="line success">${line}</div>`});terminalBody.innerHTML+='<div class="line">&nbsp;</div><div class="line input-line"><span class="prompt">$</span> <span id="terminalDisplay" class="cmd"></span><span class="cursor-blink">_</span></div>'}else{terminalBody.innerHTML+=`<div class="line"><span class="prompt">$</span> <span class="cmd">${cmd}</span></div><div class="line error">Command not found: ${cmd}. Type \'help\'.</div><div class="line">&nbsp;</div><div class="line input-line"><span class="prompt">$</span> <span id="terminalDisplay" class="cmd"></span><span class="cursor-blink">_</span></div>'}terminalBody.scrollTop=terminalBody.scrollHeight;const ti=document.getElementById('terminalInput');ti.value='';ti.focus()}
+document.getElementById('terminalInput').addEventListener('input',e=>{const display=document.getElementById('terminalDisplay');if(display)display.textContent=e.target.value});
+document.getElementById('terminalInput').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();processCommand(e.target.value)}});
+terminalBody.addEventListener('click',()=>{const ti=document.getElementById('terminalInput');ti.focus()});
 
 // CONTACT FORM
 function handleSubmit(e){e.preventDefault();alert('Message sent! I\'ll get back to you soon.');e.target.reset()}
